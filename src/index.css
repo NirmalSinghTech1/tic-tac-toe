@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.87);
+  /* background-color: #242424; */
+  background-color: #0D0E0F;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, p {
+  margin: 0;
+  padding: 0;
+}

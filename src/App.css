@@ -28,3 +28,67 @@ header h1 {
     0 0 5px rgb(83, 255, 255),
     0 0 8px rgb(83, 255, 255);
 }
+
+#game-board {
+  background-color: black;
+  width: 750px;
+  height: auto;
+  border-radius: 1rem;
+  margin-top: 2em;
+  padding: 2em;
+}
+
+.game-board-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-board-container ol {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-board-container ol:not(:last-child) {
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.game-board-container ol li {
+  width: 230px;
+  height: 230px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-board-container ol li:hover {
+  background-color: #FFFFFF1A;
+  cursor: pointer;
+}
+
+.game-board-container ol li:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);  
+}
+
+svg circle {
+  stroke-dasharray: 315;
+  stroke-dashoffset: 315;
+}
+
+circle {
+  filter: drop-shadow(0 0 4px #179fff);
+  animation: drawCircle 0.8s linear forwards;
+
+}
+
+@keyframes drawCircle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+svg line {
+  filter: drop-shadow(0 0 4px#ef4444);
+}

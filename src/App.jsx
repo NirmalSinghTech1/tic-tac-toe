@@ -1,5 +1,7 @@
 import gameLogo from "./assets/game-logo2.png";
 import "./App.css";
+import { FaEdit } from "react-icons/fa";
+import { HiOutlineTrophy } from "react-icons/hi2";
 
 const X = (
   <svg width="120" height="120" viewBox="0 0 120 120">
@@ -58,38 +60,73 @@ function App() {
           <h2>PLAYERS</h2>
           <div id="players">
             <div className="player1">
-              <div>
+              <span className="player-sign">X</span>
+              <div className="player-name-section">
                 <p>PLAYER 1</p>
-                <p className="score">0</p>
+                <button className="name-edit-button">
+                  <FaEdit className="name-edit-icon" />
+                </button>
               </div>
-              <button>Edit</button>
+              <p className="score">5</p>
             </div>
             <div className="player2">
-              <div>
-                <p>PLAYER 2</p>
-                <p className="score">0</p>
+              <span className="player-sign">O</span>
+              <div className="player-name-section">
+                <p>PLAYER 2 </p>
+                <button className="name-edit-button">
+                  <FaEdit className="name-edit-icon" />
+                </button>
               </div>
-              <button>Edit</button>
+              <p className="score">10</p>
             </div>
           </div>
         </div>
-        <section id="game-board">
-          <div className="game-board-container">
-            <ol>
-              <li>{X}</li>
-              <li>{O}</li>
-              <li>{X}</li>
-            </ol>
-            <ol>
-              <li>{X}</li>
-              <li>{O}</li>
-              <li>{O}</li>
-            </ol>
-            <ol>
-              <li>{O}</li>
-              <li>{X}</li>
-              <li>{X}</li>
-            </ol>
+        <section id="main-container">
+          <div id="scoreboard">
+            <h3>
+              <span>
+                <HiOutlineTrophy
+                  style={{ color: "yellow", fontSize: "1.5rem" }}
+                />
+              </span>{" "}
+              SCOREBOARD
+            </h3>
+            <div className="player1-sign">
+              <span className="sign">X</span>
+              <span className="player1-score">3</span>
+            </div>
+            <div className="tie">
+              <span className="sign">TIE</span>
+              <span className="tie-score">0</span>
+            </div>
+            <div className="player2-score">
+              <span className="sign">O</span>
+              <span className="player2-score">5</span>
+            </div>
+          </div>
+          <section id="game-board">
+            <div className="game-board-container">
+              <ol>
+                <li>{X}</li>
+                <li>{O}</li>
+                <li>{X}</li>
+              </ol>
+              <ol>
+                <li>{X}</li>
+                <li>{O}</li>
+                <li>{O}</li>
+              </ol>
+              <ol>
+                <li>{O}</li>
+                <li>{X}</li>
+                <li>{X}</li>
+              </ol>
+            </div>
+          </section>
+          <div id="game-restart-container">
+            <span>X's turn</span>
+            <button className="btn-new-game">New Game</button>
+            <button className="btn-reset-all">Reset All</button>
           </div>
         </section>
       </main>

@@ -30,9 +30,10 @@ body {
   width: 100%;
   min-height: 100vh;
   display: flex;
-  place-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding-bottom: 4rem;
-  /* background-color: #000000; */
 }
 
 header {
@@ -50,4 +51,11 @@ header h1 {
     0 0 1px rgb(83, 255, 255),
     0 0 5px rgb(83, 255, 255),
     0 0 8px rgb(83, 255, 255);
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
 }

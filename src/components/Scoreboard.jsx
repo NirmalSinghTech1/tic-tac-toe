@@ -11,7 +11,7 @@ export default function Scoreboard() {
       </h3>
       <div className="player1-sign">
         <span className="sign">X</span>
-        <span className="player1-score">3</span>
+        <span className="player1-score">0</span>
       </div>
       <div className="tie">
         <span className="sign">TIE</span>
@@ -19,7 +19,7 @@ export default function Scoreboard() {
       </div>
       <div className="player2-score">
         <span className="sign">O</span>
-        <span className="player2-score">5</span>
+        <span className="player2-score">0</span>
       </div>
     </div>
   );

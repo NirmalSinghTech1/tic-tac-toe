@@ -1,44 +1,5 @@
 import { useState } from "react";
-
-const X = (
-  <svg width="120" height="120" viewBox="0 0 120 120">
-    <line
-      className="draw-x"
-      x1="20"
-      y1="20"
-      x2="100"
-      y2="100"
-      stroke="#ef4444"
-      strokeWidth="15"
-      strokeLinecap="round"
-    />
-    <line
-      className="draw-x"
-      x1="100"
-      y1="20"
-      x2="20"
-      y2="100"
-      stroke="#ef4444"
-      strokeWidth="15"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
-const O = (
-  <svg width="140" height="140" viewBox="0 0 140 140">
-    <circle
-      className="draw-circle"
-      cx="70"
-      cy="70"
-      r="50"
-      stroke="#179fff"
-      strokeWidth="15"
-      strokeLinecap="round"
-      fill="none"
-    />
-  </svg>
-);
+import WINNING_COMBINATIONS from "../WinningCombinations";
 
 const GAMEBOARD_SYMBOLS = [
   [null, null, null],
@@ -46,16 +7,19 @@ const GAMEBOARD_SYMBOLS = [
   [null, null, null],
 ];
 
-export default function Gameboard() {
+export default function Gameboard({ playerTurn, onPlayerTurn }) {
   const [gameBoard, setGameBoard] = useState(GAMEBOARD_SYMBOLS);
 
+  console.log(gameBoard);
   function handleShowSymbol(rowIndex, colIndex) {
     setGameBoard((prevGameBoard) => {
       const prevBoardCopy = [...prevGameBoard].map((cols) => [...cols]);
 
-      prevBoardCopy[rowIndex][colIndex] = X;
+      prevBoardCopy[rowIndex][colIndex] = playerTurn;
       return prevBoardCopy;
     });
+
+    onPlayerTurn();
   }
 
   return (
@@ -69,6 +33,7 @@ export default function Gameboard() {
                   <button
                     key={colIndex}
                     onClick={() => handleShowSymbol(rowIndex, colIndex)}
+                    disabled={col !== null}
                   >
                     <li>{col}</li>
                   </button>

@@ -5,6 +5,13 @@ import Player from "./components/Player";
 import Scoreboard from "./components/Scoreboard";
 import Gameboard from "./components/Gameboard";
 import GameRestart from "./components/GameRestart";
+import WINNING_COMBINATIONS from "./WinningCombinations.js";
+
+const INITIAL_GAMEBOARD = [
+  [null, null, null],
+  [null, null, null],
+  [null, null, null],
+];
 
 const X = (
   <svg width="120" height="120" viewBox="0 0 120 120">
@@ -46,13 +53,36 @@ const O = (
   </svg>
 );
 
+function checkWinner(board) {
+  for (const combination of WINNING_COMBINATIONS) {
+    const first = board[combination[0].row][combination[0].col];
+    const second = board[combination[1].row][combination[1].col];
+    const third = board[combination[2].row][combination[2].col];
+
+    if (first && first === second && first === third) {
+      return first;
+    }
+  }
+  return null;
+}
+
 function App() {
   const [playerTurn, setPlayerTurn] = useState(X);
+  const [gameBoard, setGameBoard] = useState(INITIAL_GAMEBOARD);
 
-  function handlePlayerTurn() {
-    setPlayerTurn((prevTurn) =>
-      prevTurn === X ? (prevTurn = O) : (prevTurn = X),
-    );
+  const winner = checkWinner(gameBoard);
+
+  function handleShowSymbol(rowIndex, colIndex) {
+    if (gameBoard[rowIndex][colIndex] || winner) return;
+
+    setGameBoard((prevGameBoard) => {
+      const newBoard = [...prevGameBoard].map((cols) => [...cols]);
+
+      newBoard[rowIndex][colIndex] = playerTurn;
+      return newBoard;
+    });
+
+    setPlayerTurn((prevTurn) => (prevTurn === X ? O : X));
   }
 
   return (
@@ -67,7 +97,7 @@ function App() {
         </div>
         <section id="main-container">
           <Scoreboard />
-          <Gameboard playerTurn={playerTurn} onPlayerTurn={handlePlayerTurn} />
+          <Gameboard gameBoard={gameBoard} onShowSymbol={handleShowSymbol} />
           <GameRestart turn={playerTurn === X ? "X" : "O"} />
         </section>
       </main>

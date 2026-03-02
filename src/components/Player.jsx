@@ -2,10 +2,10 @@ import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { RiSave3Fill } from "react-icons/ri";
 
-export default function Player({ sign, name, score }) {
+export default function Player({ sign, name, playerScore }) {
   const [playerName, setPlayerName] = useState(name);
   const [isEditing, setIsEditing] = useState(false);
-
+  console.log(playerScore)
   function handleNameChange(event) {
     setPlayerName(event.target.value);
   }
@@ -37,7 +37,7 @@ export default function Player({ sign, name, score }) {
           )}
         </button>
       </div>
-      <p className="score">{score}</p>
+      <p className="score">{sign === 'X' ? playerScore.X : playerScore.O}</p>
     </div>
   );
 }

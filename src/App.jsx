@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import "./App.css";
 import Player from "./components/Player";
@@ -12,6 +12,8 @@ const INITIAL_GAMEBOARD = [
   [null, null, null],
   [null, null, null],
 ];
+
+const INITIAL_SCORES = { X: 0, tie: 0, O: 0 };
 
 const X = (
   <svg width="120" height="120" viewBox="0 0 120 120">
@@ -69,20 +71,43 @@ function checkWinner(board) {
 function App() {
   const [playerTurn, setPlayerTurn] = useState(X);
   const [gameBoard, setGameBoard] = useState(INITIAL_GAMEBOARD);
-
-  const winner = checkWinner(gameBoard);
+  const [scores, setScores] = useState(INITIAL_SCORES);
+  const winnerRef = useRef(null);
 
   function handleShowSymbol(rowIndex, colIndex) {
-    if (gameBoard[rowIndex][colIndex] || winner) return;
+    if (gameBoard[rowIndex][colIndex] || checkWinner(gameBoard)) return;
 
     setGameBoard((prevGameBoard) => {
       const newBoard = [...prevGameBoard].map((cols) => [...cols]);
-
       newBoard[rowIndex][colIndex] = playerTurn;
+
+      const gameWinner = checkWinner(newBoard);
+      if (gameWinner && winnerRef.current !== gameWinner) {
+        winnerRef.current = gameWinner;
+        setScores((prevScores) => ({
+          ...prevScores,
+          [gameWinner === X ? "X" : "O"]:
+            prevScores[gameWinner === X ? "X" : "O"] + 1,
+        }));
+      }
+
       return newBoard;
     });
 
     setPlayerTurn((prevTurn) => (prevTurn === X ? O : X));
+  }
+
+  function handleNewGame() {
+    setGameBoard(INITIAL_GAMEBOARD);
+    winnerRef.current = null;
+    setPlayerTurn(X);
+  }
+
+  function handleGameReset() {
+    setGameBoard(INITIAL_GAMEBOARD);
+    winnerRef.current = null;
+    setScores(INITIAL_SCORES);
+    setPlayerTurn(X);
   }
 
   return (
@@ -91,14 +116,18 @@ function App() {
         <div id="players-container">
           <h2>PLAYERS</h2>
           <div id="players">
-            <Player sign="X" name="player 1" score={0} />
-            <Player sign="O" name="player 2" score={0} />
+            <Player sign="X" name="player 1" playerScore={scores} />
+            <Player sign="O" name="player 2" playerScore={scores} />
           </div>
         </div>
         <section id="main-container">
-          <Scoreboard />
+          <Scoreboard scores={scores} />
           <Gameboard gameBoard={gameBoard} onShowSymbol={handleShowSymbol} />
-          <GameRestart turn={playerTurn === X ? "X" : "O"} />
+          <GameRestart
+            turn={playerTurn === X ? "X" : "O"}
+            onNewGame={handleNewGame}
+            onGameReset={handleGameReset}
+          />
         </section>
       </main>
     </>

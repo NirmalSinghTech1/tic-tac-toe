@@ -1,7 +1,6 @@
 import { HiOutlineTrophy } from "react-icons/hi2";
 
-export default function Scoreboard({scores}) {
-  
+export default function Scoreboard({ scores }) {
   return (
     <div id="scoreboard">
       <h3>

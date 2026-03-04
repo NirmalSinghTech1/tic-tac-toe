@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import confetti from "canvas-confetti";
 
 import "./App.css";
 import Player from "./components/Player";
@@ -14,6 +15,7 @@ const INITIAL_GAMEBOARD = [
 ];
 
 const INITIAL_SCORES = { X: 0, tie: 0, O: 0 };
+const INITIAL_WINNER_DRAW = { winner: null, isDraw: false };
 
 const X = (
   <svg width="120" height="120" viewBox="0 0 120 120">
@@ -62,17 +64,42 @@ function checkWinner(board) {
     const third = board[combination[2].row][combination[2].col];
 
     if (first && first === second && first === third) {
-      return first;
+      return first === X ? "X" : "O";
     }
   }
   return null;
+}
+
+function dropConfetti() {
+  let end = Date.now() + 1 * 1000;
+  let colors = ["#ef4444", "#179fff"];
+  (function frame() {
+    confetti({
+      particleCount: 3,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+      colors: colors,
+    });
+    confetti({
+      particleCount: 3,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+      colors: colors,
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  })();
 }
 
 function App() {
   const [playerTurn, setPlayerTurn] = useState(X);
   const [gameBoard, setGameBoard] = useState(INITIAL_GAMEBOARD);
   const [scores, setScores] = useState(INITIAL_SCORES);
-  const winnerRef = useRef(null);
+  const winnerRef = useRef(INITIAL_WINNER_DRAW);
 
   function handleShowSymbol(rowIndex, colIndex) {
     if (gameBoard[rowIndex][colIndex] || checkWinner(gameBoard)) return;
@@ -82,12 +109,21 @@ function App() {
       newBoard[rowIndex][colIndex] = playerTurn;
 
       const gameWinner = checkWinner(newBoard);
-      if (gameWinner && winnerRef.current !== gameWinner) {
-        winnerRef.current = gameWinner;
+      if (gameWinner && winnerRef.current.winner !== gameWinner) {
+        dropConfetti();
+        winnerRef.current.winner = gameWinner;
         setScores((prevScores) => ({
           ...prevScores,
-          [gameWinner === X ? "X" : "O"]:
-            prevScores[gameWinner === X ? "X" : "O"] + 1,
+          [gameWinner]: prevScores[gameWinner] + 1,
+        }));
+      }
+
+      const isDraw = newBoard.every((row) => row.every((col) => col !== null));
+      if (isDraw && !gameWinner && !winnerRef.current.isDraw) {
+        winnerRef.current.isDraw = true;
+        setScores((prevScore) => ({
+          ...prevScore,
+          tie: prevScore.tie + 1,
         }));
       }
 
@@ -99,13 +135,13 @@ function App() {
 
   function handleNewGame() {
     setGameBoard(INITIAL_GAMEBOARD);
-    winnerRef.current = null;
+    winnerRef.current = { winner: null, isDraw: false };
     setPlayerTurn(X);
   }
 
   function handleGameReset() {
     setGameBoard(INITIAL_GAMEBOARD);
-    winnerRef.current = null;
+    winnerRef.current = { winner: null, isDraw: false };
     setScores(INITIAL_SCORES);
     setPlayerTurn(X);
   }

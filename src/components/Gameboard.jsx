@@ -1,5 +1,4 @@
 export default function Gameboard({ gameBoard, onShowSymbol }) {
-
   return (
     <section id="game-board">
       <div className="game-board-container">
